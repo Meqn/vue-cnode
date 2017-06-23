@@ -8,7 +8,7 @@
 	<main class="layout-main">
 		<transition name="slide-fade" mode="out-in">
 		<!-- keep-alive 组建缓存，不销毁 -->
-		<keep-alive exclude="topics,login">
+		<keep-alive exclude="topics,myTopics,login">
 		<!-- key 同名路由有 transition 效果 -->
 		<router-view :key="key"></router-view>
 		</keep-alive>

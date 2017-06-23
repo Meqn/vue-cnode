@@ -5,6 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function(opts) {
 	return {
+		devtool: 'cheap-module-source-map',
 		entry: {
 			vendor: ['mdui'],
 			main: './src/main.js'
@@ -82,7 +83,7 @@ module.exports = function(opts) {
 				colors: true
 			},
 			historyApiFallback: true,
-			port: '3042',
+			port: '3045',
 			inline: true,
 			hot: true,
 			disableHostCheck: true,

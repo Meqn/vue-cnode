@@ -55,6 +55,8 @@
 }
 </style>
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
 	name: 'topics',
 	beforeRouteEnter (to, from, next) {
@@ -95,24 +97,14 @@ export default {
 		}
 		// 收藏主题
 		if(_routeName === 'favorite') {
-			let _username = this.$store.state.userinfo.userName;
+			let _username = this.userName;
 			this.getFavorite(_username)
-		}
-		// 我的主题
-		if(_routeName === 'myTopics') {
-			let _username = this.$store.state.userinfo.userName;
-			let _type = this.$route.params.type
-			this.getMyTopics(_username, (res) => {
-				if(_type === 'post') {
-					this.topicsData = res.recent_topics;
-				}
-				if(_type === 'reply') {
-					this.topicsData = res.recent_replies;
-				}
-			});
 		}
 	},
 	computed: {
+		...mapGetters({
+			userName: 'userName'
+		}),
 		key() {
 			return this.$route.path.replace(/\//g, '_');
 		}
@@ -187,16 +179,6 @@ export default {
 				} else {
 					this.loading.tipText = '暂无数据';
 				}
-				this.loading.show = false;
-			}).catch(error => {
-				console.error(error);
-			});
-		},
-		// 我的主题
-		getMyTopics(username, callback) {
-			this.$http.get('/user/'+ username).then(res => {
-				console.log(res);
-				callback && callback(res.data.data);
 				this.loading.show = false;
 			}).catch(error => {
 				console.error(error);

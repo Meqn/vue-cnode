@@ -23,7 +23,7 @@
 			</div>
 		</router-link>
 		<li v-if="isLoading" class="tac"><div class="g-loading"></div> <span class="mdui-text-color-grey-500">Loading...</span></li>
-		<li v-if="isNone">
+		<li v-if="noData">
 			<div class="g-empty"><span class="line"></span><span class="text">暂无数据</span><span class="line"></span></div>
 		</li>
 	</ul>
@@ -39,20 +39,26 @@
 </style>
 
 <script>
-
+import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
+	name: 'myTopics',
 	data() {
 		return {
 			isLoading: true,
-			isNone: false,
+			noData: false,
 			type: 'recent_replies',
 			topicsList: {}
 		}
 	},
 	created() {
-		let _username = this.$store.state.userinfo.userName;
+		let _username = this.getUserName;
 		this.type = this.getType(this.$route);
-		this.getTopics(_username)
+
+		if(this.myTopics['recent_replies'] && this.myTopics['recent_topics']) {
+			this.getSuccess(this.myTopics);
+		} else {
+			this.getTopics(_username)
+		}
 	},
 	mounted() {
 		this.$nextTick(() => {
@@ -63,21 +69,39 @@ export default {
 			}
 		})
 	},
+	computed: {
+		...mapState({
+			userinfo: state => state.user.userinfo
+		}),
+		// userinfo = myTopics
+		...mapGetters({
+			getUserName: 'getUserName',
+			myTopics: 'getUserInfo'
+		})
+	},
 	watch: {
 		'$route' (to, from) {
 			this.type = this.getType(to);
 		}
 	},
 	methods: {
+		...mapMutations({
+			setUserInfo: 'setUserInfo'
+		}),
 		getTopics(username) {
 			this.$http.get('/user/'+ username).then(res => {
 				console.log(res);
-				this.topicsList = res.data.data;
-				this.isLoading = false;
-				this.isNone = this.topicsList[this.type].length > 0 ? false : true;
+				var _data = res.data.data;
+				this.setUserInfo(_data);
+				this.getSuccess(_data)
 			}).catch(error => {
 				console.error(error);
 			});
+		},
+		getSuccess(data) {
+			this.topicsList = data;
+			this.isLoading = false;
+			this.noData = this.topicsList[this.type].length > 0 ? false : true;
 		},
 		getType(route) {
 			return route.query.type && route.query.type === 'post' ? 'recent_topics' : 'recent_replies'

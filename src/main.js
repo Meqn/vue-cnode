@@ -14,7 +14,7 @@ import "@modules/mdui/dist/css/mdui.css"
 
 
 if(window.sessionStorage.user) {
-	store.commit('setUserinfo', JSON.parse(window.sessionStorage.user));
+	store.commit('setUser', JSON.parse(window.sessionStorage.user));
 }
 const router = new VueRouter({
 	routes
@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
 		document.body.style.backgroundColor = '#f5f5f5';
 	}
 	if(to.matched.some(record => record.meta.requiresAuth)) {
-		if(store.state.userinfo.userId) {
+		if(store.state.user.user['userId']) {
 			next();
 		} else {
 			next({

@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
 	name: 'login',
 	data() {
@@ -18,13 +20,18 @@ export default {
 		}
 	},
 	created() {
-		if(this.$store.state.userinfo.userId) {
+		// store 中 username
+		if(this.userName) {
 			this.$router.push({
 				path: '/my'
 			});
 		}
 	},
+	computed: {
+		...mapGetters(['userName'])
+	},
 	methods: {
+		...mapMutations(['setUser']),
 		login() {
 			this.$http.post('/accesstoken', {
 				accesstoken: this.token
@@ -38,9 +45,9 @@ export default {
 						token: this.token
 					}
 					window.sessionStorage.setItem('user', JSON.stringify(user));
-					this.$store.commit('setUserinfo', user);
+					// this.$store.commit('setUser', user);
+					this.setUser(user);
 					this.token = '';
-
 					this.$router.push({
 						path: this.$route.query.redirect ? this.$route.query.redirect : '/my'
 					});
