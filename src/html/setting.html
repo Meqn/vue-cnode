@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Vue-cnode</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/node_modules/mdui/dist/css/mdui.min.css" rel="stylesheet">
+<script src="/node_modules/mdui/dist/js/mdui.min.js"></script>
+<link href="./style.css" rel="stylesheet">
+</head>
+<!-- 主题色 强调色 底部导航固定 抽屉式导航左侧 -->
+<body class="mdui-theme-primary-blue mdui-theme-accent-red mdui-appbar-with-toolbar mdui-color-grey-100">
+<!-- 头部toolbar -->
+<header class="mdui-appbar mdui-appbar-fixed">
+	<div class="mdui-toolbar mdui-color-theme">
+		<a href="user.html" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe31b;</i></a>
+		<span class="mdui-typo-title mdui-center">设置</span>
+		<i class="mdui-icon"></i>
+	</div>
+</header>
+
+<style>
+.user-menu{padding: 0; margin-bottom: 8px; background-color: #fff;}
+</style>
+<main class="layout-main">
+	<div class="mdui-list mdui-list-default user-menu">
+		<span class="mdui-list-item">
+			<div class="mdui-list-item-content">小尾巴</div>
+			<label class="mdui-switch" style="margin-left: auto;">
+				<input type="checkbox" checked>
+				<i class="mdui-switch-icon"></i>
+			</label>
+		</span>
+		<hr class="mdui-divider mdui-m-y-0">
+		<span class="mdui-list-item">
+			<div class="mdui-list-item-content">当前版本</div>
+			<span style="margin-left: auto;">1.2.3</span>
+		</span>
+		<hr class="mdui-divider mdui-m-y-0">
+		<a href="#" class="mdui-list-item mdui-ripple">
+			<div class="mdui-list-item-content">意见反馈</div>
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe409;</i>
+		</a>
+	</div>
+	<div class="mdui-list user-menu">
+		<span class="mdui-list-item mdui-ripple">
+			<div class="mdui-list-item-content tac">退出登录</div>
+		</span>
+	</div>
+</main>
+
+
+</body>
+</html>

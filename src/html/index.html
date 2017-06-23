@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Vue-cnode</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="/node_modules/mdui/dist/css/mdui.min.css" rel="stylesheet">
+<script src="/node_modules/mdui/dist/js/mdui.min.js"></script>
+<link href="./style.css" rel="stylesheet">
+</head>
+<!-- 主题色 强调色 底部导航固定 抽屉式导航左侧 -->
+<body class="mdui-theme-primary-blue mdui-theme-accent-red mdui-drawer-body-left mdui-appbar-with-toolbar mdui-bottom-nav-fixed mdui-color-grey-100">
+<!-- 头部toolbar -->
+<header class="mdui-appbar mdui-appbar-fixed">
+	<div class="mdui-toolbar mdui-color-theme">
+		<a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#main-drawer'}"><i class="mdui-icon material-icons">&#xe5d2;</i></a>
+		<!-- <span class="mdui-typo-title">cnode</span> -->
+		<span class="mdui-typo-title mdui-center">最新</span>
+		<!-- <div class="mdui-toolbar-spacer"></div> -->
+		<a href="post.html" class="mdui-btn mdui-btn-icon rotate45">
+			<i class="mdui-icon material-icons">&#xe163;</i>
+		</a>
+	</div>
+</header>
+
+
+<style>
+.topic-list{}
+.topic-list-item{margin-bottom: 5px; background-color: #fff;}
+.topic-list-item .tag{
+	padding: 2px 5px;
+	font-size: .75em; color: #fff; vertical-align: middle;
+	background-color: #dcdcdc; border-radius: 4px;
+}
+.topic-list-item .tag.top{background-color: #E91E63;}
+.topic-list-item .tag.good{background-color: #2196F3;}
+.topic-list-item .tag.ask{background-color: #4CAF50;}
+.topic-list-item .tag.share{background-color: #FFC107;}
+.topic-list-item .tag.job{background-color: #607D8B;}
+
+</style>
+<main class="layout-main">
+	<ul class="mdui-list topic-list">
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag top">置顶</span> 饿了么大前端 Node.js 进阶教程 进阶教程 进阶教程
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag good">精华</span> 使用electron打包的cnode pc 客户端
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag share">分享</span> 我是如何实现简单的随机中文名生成器的（Node 版）
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag ask">问答</span> 饿了么大前端 Node.js 进阶教程 进阶教程 进阶教程
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag job">招聘</span> 体验异步的终极解决方案-ES7的Async/Await
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag top">置顶</span> 饿了么大前端 Node.js 进阶教程 进阶教程 进阶教程
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag good">精华</span> 使用electron打包的cnode pc 客户端
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag share">分享</span> 我是如何实现简单的随机中文名生成器的（Node 版）
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag ask">问答</span> 饿了么大前端 Node.js 进阶教程 进阶教程 进阶教程
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		<a href="topic.html" class="mdui-list-item mdui-ripple topic-list-item">
+			<div class="mdui-list-item-avatar">
+				<img src="http://static.mengqing.org/extension/avatar.png">
+			</div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title mdui-text-truncate">
+					<span class="tag job">招聘</span> 体验异步的终极解决方案-ES7的Async/Await
+				</div>
+				<div class="mdui-list-item-text mdui-list-item-one-line">
+					<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe625;</i>
+					<span>812/234523</span>
+					<div class="mdui-float-right">
+						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
+						<span class="">10分钟前</span>
+					</div>
+				</div>
+			</div>
+		</a>
+	</ul>
+</main>
+
+<!-- 底部导航 -->
+<nav class="mdui-bottom-nav mdui-shadow-4" style="background-color: #fff;">
+	<a href="###" class="mdui-ripple mdui-bottom-nav-active">
+		<i class="mdui-icon material-icons">&#xe1b8;</i>
+		<label>Home</label>
+	</a>
+	<a href="###" class="mdui-ripple">
+		<i class="mdui-icon material-icons">&#xe90f;</i>
+		<label>Favorite</label>
+	</a>
+	<a href="###" class="mdui-ripple">
+		<i class="mdui-icon material-icons">&#xe1b7;</i>
+		<label>Message</label>
+	</a>
+	<a href="###" class="mdui-ripple">
+		<i class="mdui-icon material-icons">&#xe86b;</i>
+		<label>Me</label>
+	</a>
+</nav>
+
+<!-- 左侧抽屉式导航 -->
+<aside class="mdui-drawer mdui-color-grey-50" id="main-drawer">
+	<div class="mdui-list">
+		<a href="user.html" class="mdui-list-item mdui-ripple">
+			<div class="mdui-list-item-avatar"><img src="http://static.mengqing.org/extension/avatar.png"></div>
+			<div class="mdui-list-item-content minw0">
+				<div class="mdui-list-item-title">Brunch Lee</div>
+				<div class="mdui-list-item-text mdui-text-truncate">签名这么短，让我怎么发挥一下特产！</div>
+			</div>
+		</a>
+	</div>
+	<hr class="mdui-divider mdui-divider-inset">
+	<ul class="mdui-list">
+		<li class="mdui-list-item mdui-ripple">
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe1db;</i>
+			<div class="mdui-list-item-content">全部</div>
+		</li>
+		<li class="mdui-list-item mdui-ripple">
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe8d0;</i>
+			<div class="mdui-list-item-content">精华</div>
+		</li>
+		<li class="mdui-list-item mdui-ripple">
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe80d;</i>
+			<div class="mdui-list-item-content">分享</div>
+		</li>
+		<li class="mdui-list-item mdui-ripple">
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe0bf;</i>
+			<div class="mdui-list-item-content">问答</div>
+		</li>
+		<li class="mdui-list-item mdui-ripple">
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe7ef;</i>
+			<div class="mdui-list-item-content">招聘</div>
+		</li>
+		<hr class="mdui-divider mdui-divider-inset">
+		<li class="mdui-list-item mdui-ripple">
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe7f5;</i>
+			<div class="mdui-list-item-content">消息</div>
+		</li>
+		<li class="mdui-list-item mdui-ripple">
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe001;</i>
+			<div class="mdui-list-item-content">关于</div>
+		</li>
+		<li class="mdui-list-item mdui-ripple">
+			<i class="mdui-list-item-icon mdui-icon material-icons">&#xe8ac;</i>
+			<div class="mdui-list-item-content">注销</div>
+		</li>
+	</ul>
+</aside>
+
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+*.swp
+*.swo
+node_modules
+
+
+.package/
+.sass-cache/
+.DS_Store
+.vscode
+*.orig
+

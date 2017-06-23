@@ -1,0 +1,110 @@
+
+body{
+	overflow-x: hidden;
+}
+
+
+/**** flex *******************************************************/
+.g-flex{
+	display: flex;
+	flex-flow: row nowrap;
+}
+.g-flex-item{
+	flex: 1 1;
+}
+.g-flex-top{
+	align-items: flex-start;
+}
+.g-flex-middle{
+	align-items: center;
+}
+.g-flex-bottom{
+	align-items: flex-end;
+}
+
+/**** loaidng *******************************************************/
+.g-loading{
+	display: inline-block; position: relative;
+	box-sizing: border-box;
+	width: 24px; height: 24px;
+	border: 3px solid #2196f3;
+	vertical-align: middle;
+	border-radius: 50%;
+	animation: rotate .9s linear infinite;
+
+	&::after{
+		content: ""; display: block;
+		position: absolute; top: 5px; right: -3px;
+		width: 8px; height: 8px;
+		background-color: #FFF;
+		box-shadow: 0 0 5px 2px rgb(255,255,255)
+	}
+}
+
+@keyframes rotate{
+	to{
+		transform: rotate(360deg);
+	}
+}
+
+.g-empty{
+	display: flex;
+	margin: 0 8px;
+	flex-flow: row nowrap;
+	align-items: center;
+
+	.line{
+		flex: 1 1;
+		height: 1px;
+		font-size: 0; line-height: 0;
+		background-color: rgba(0, 0, 0, .12);
+	}
+	.text{
+		margin: 0 8px;
+		color: #9e9e9e;
+	}
+}
+
+/**** comm *******************************************************/
+@each $val in (12,14,16,18,24,36) {
+	.font#{$val} {
+		font-size: $val + px !important;
+	}
+}
+.tal{text-align: left}
+.tac{text-align: center}
+.tar{text-align: right}
+.minw0{
+	min-width: 0;
+}
+.w100{
+	width: 100%;
+}
+.rotate45{
+	transform: rotate(-45deg);
+}
+.mdui-icon.mdui-icon-mini,.mdui-icon.mdui-icon-mini::before{
+	font-size: 16px;
+}
+
+.mdui-textarea{
+	box-sizing: border-box;
+	width: 100%;
+	padding: 8px;
+	font-size: 14px; line-height: 1.5;
+	border: 1px solid rgba(0, 0, 0, .12);
+	appearance: none; outline: none; box-shadow: none;
+}
+.mdui-list-default .mdui-list-item{cursor: default;}
+.mdui-list-default .mdui-list-item:hover{background-color: transparent !important;}
+
+@media screen and (min-width: 1000px) {
+	.layout-main{
+		max-width: 1000px;
+		margin-left: auto; margin-right: auto;
+	}
+}
+
+
+
+
