@@ -14,7 +14,6 @@
 	</div>
 </template>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
 .topic-comments-post textarea{border: none;}
 </style>

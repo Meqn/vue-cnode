@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	name: 'login',
@@ -20,40 +20,50 @@ export default {
 		}
 	},
 	created() {
-		// store 中 username
 		if(this.userName) {
-			this.$router.push({
-				path: '/my'
-			});
+			this.$router.push({path:'/my'});
 		}
 	},
 	computed: {
-		...mapGetters(['userName'])
+		...mapGetters({
+			userName: 'getUserName'
+		})
 	},
 	methods: {
-		...mapMutations(['setUser']),
+		...mapActions({
+			getUser: 'getUser',
+			setToast: 'setToast',
+			hideToast: 'hideToast'
+		}),
 		login() {
-			this.$http.post('/accesstoken', {
-				accesstoken: this.token
-			}).then(res => {
-				if(res.status === 200) {
-					const data = res.data;
-					const user = {
-						userId: data.id,
-						userName: data.loginname,
-						avatar: data.avatar_url,
-						token: this.token
-					}
-					window.sessionStorage.setItem('user', JSON.stringify(user));
-					// this.$store.commit('setUser', user);
-					this.setUser(user);
-					this.token = '';
-					this.$router.push({
-						path: this.$route.query.redirect ? this.$route.query.redirect : '/my'
+			var context = this;
+			context.setToast({type: 'loading', text: '登录中...'})
+			context.getUser({
+				token: context.token,
+				success() {
+					context.token = '';
+					context.setToast({
+						show: false,
+						type: 'done',
+						text: '登录成功!',
+						time: 1000,
+						callback() {
+							context.$router.push({
+								path: context.$route.query.redirect ? context.$route.query.redirect : '/my'
+							});
+						}
+					});
+				},
+				fail(err) {
+					console.error(err)
+					context.token = '';
+					context.setToast({
+						show: false,
+						type: 'fail',
+						text: '登录失败!',
+						time: 1000
 					});
 				}
-			}).catch(err => {
-				console.error(err);
 			});
 		}
 	}

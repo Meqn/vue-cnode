@@ -74,7 +74,8 @@ module.exports = function(opts) {
 				'@modules': path.resolve(__dirname, 'node_modules'),
 				'@': path.resolve(__dirname, 'src'),
 				'@components': path.resolve(__dirname, 'src/components'),
-				'@pages': path.resolve(__dirname, 'src/pages')
+				'@pages': path.resolve(__dirname, 'src/pages'),
+				'@libs': path.resolve(__dirname, 'src/libs')
 			}
 		},
 		devServer: {

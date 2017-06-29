@@ -2,9 +2,12 @@
 <div class="user">
 	<div class="user-header">
 		<div class="user-avatar">
-			<img src="http://static.mengqing.org/extension/avatar.png">
+			<img :src="avatar">
 		</div>
-		<div class="user-name">Michael</div>
+		<div class="user-name">
+			<span v-if="username !== ''">{{username}}</span>
+			<router-link :to="{path: 'login'}" v-else>点击登录</router-link>
+		</div>
 	</div>
 	<div class="mdui-list mdui-list-dense user-menu">
 		<a href="topics.html" class="mdui-list-item mdui-ripple">
@@ -64,6 +67,33 @@
 .user-avatar{width: 72px; height: 72px; overflow: hidden; margin:0 auto 10px;}
 .user-avatar img{width: 72px; height: 72px; border-radius: 50%; vertical-align: middle;}
 .user-name{text-align: center; font-size: 16px;}
+.user-name a{text-decoration: none; font-size: 14px;}
 
 .user-menu{padding: 0 !important; margin-bottom: 8px !important; background-color: #fff !important;}
 </style>
+
+<script>
+import {mapState, mapActions} from 'vuex'
+
+export default {
+	name: 'me',
+	data() {
+		return {
+			username: '',
+			avatar: 'http://static.mengqing.org/extension/avatar.png'
+		}
+	},
+	created() {
+		if(this.userinfo && this.userinfo.id) {
+			let {username, avatar} = this.userinfo
+			this.username = username
+			this.avatar = avatar
+		}
+	},
+	computed: {
+		...mapState({
+			userinfo: state => state.user.user
+		})
+	}
+}
+</script>

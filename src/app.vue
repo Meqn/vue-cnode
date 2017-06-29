@@ -8,7 +8,7 @@
 	<main class="layout-main">
 		<transition name="slide-fade" mode="out-in">
 		<!-- keep-alive 组建缓存，不销毁 -->
-		<keep-alive exclude="topics,myTopics,login">
+		<keep-alive exclude="topics,login,me,favorite,myTopics,messages,detail">
 		<!-- key 同名路由有 transition 效果 -->
 		<router-view :key="key"></router-view>
 		</keep-alive>
@@ -19,6 +19,9 @@
 	<menu-bar v-show="!$route.meta.menuBottom"></menu-bar>
 	<!-- 左侧抽屉式导航 -->
 	<menu-left v-show="$route.meta.toolBarLeft == 'menu'"></menu-left>
+	<transition name="fade" mode="out-in">
+	<toast v-show="$store.state.docs.toast.show"></toast>
+	</transition>
 </div>
 </template>
 
@@ -27,6 +30,7 @@
 import toolBar from '@components/tool-bar'
 import menuLeft from '@components/menu-left'
 import menuBar from '@components/menu-bar'
+import toast from '@components/toast'
 
 
 export default {
@@ -37,8 +41,10 @@ export default {
 			subtitle: 'this is a simple demo.'
 		}
 	},
+	mounted() {
+	},
 	components: {
-		toolBar, menuBar, menuLeft
+		toolBar, menuBar, menuLeft, toast
 	},
 	computed: {
 		key() {

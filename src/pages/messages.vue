@@ -1,53 +1,92 @@
 <template>
 <div class="messages">
-	<div class="mdui-tab mdui-tab-full-width message-tab" mdui-tab>
+	<div class="mdui-tab mdui-tab-full-width whiteBg" id="messages-tab">
 		<router-link :to="{path: '/messages', query: {type : 'new'}}" class="mdui-ripple" active-class="mdui-tab-active" exact>新消息</router-link>
 		<router-link :to="{path: '/messages', query: {type : 'all'}}" class="mdui-ripple" active-class="mdui-tab-active" exact>历史消息</router-link>
 	</div>
-	<div class="message-list" id="message-new">
-		<li class="message-item">
-			<div class="g-flex hd">
-				<span class="g-flex-item"><a href="#">mengqing723</a> @了你</span>
-				<span class="font12 mdui-text-color-grey-500">16分钟前</span>
-			</div>
-			<div class="mdui-text-truncate ft">来自话题：<a href="#">我是如何实现简单的随机中文名生成器的</a></div>
-		</li>
-		<li class="message-item mdui-color-white">
-			<div class="g-flex hd">
-				<span class="g-flex-item"><a href="#">lmq6</a> 回复了你</span>
-				<span class="font12 mdui-text-color-grey-500">7分钟前</span>
-			</div>
-			<div class="bd">
-				<a href="#">@mengqing723</a> 哈哈哈，我回复了你。
-			</div>
-			<div class="mdui-text-truncate ft">来自话题：<a href="#">我是如何实现简单的随机中文名生成器的 Node版</a></div>
-		</li>
-	</div>
+	<transition name="slide-fade" mode="out-in">
+	<messages-list :messages="messages[type]" :key="key"></messages-list>
+	</transition>
 </div>
 </template>
 
-<style lang="scss">
-.message{
-	&-tab{
-		margin-bottom: 8px; background-color: #fff;
-	}
-	&-list{
-		a{
-			color: #448AFF; text-decoration: none;
-			&:hover{
-				color:#FF5252;
-			}
-		}
-	}
-	&-item{
-		list-style: none; padding: 16px; margin-bottom: 8px; background-color: #fff;
+<script>
+import { mapState, mapGetters, mapActions } from 'vuex'
+import messagesList from '@components/messages-list'
 
-		.bd{
-			margin: 8px 16px; text-align: justify;
+export default {
+	name: 'messages',
+	components: {
+		messagesList
+	},
+	data() {
+		return {
+			type: 'hasnot_read_messages',
+			messages: {}
 		}
-		.ft{
-			margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0, 0, 0, .12);
+	},
+	created() {
+		if(this.messagesData && this.messagesData[this.type]) {
+			this.success(this.messagesData);
+		} else {
+			this.getMessagesAll(this.token)
+		}
+	},
+	mounted() {
+		this.$nextTick(() => {
+			if(window['mdui']) {
+				new mdui.Tab('#messages-tab');
+			} else {
+				window.addEventListener('DOMContentLoaded', () => {new mdui.Tab('#messages-tab')}, false);
+			}
+		})
+	},
+	watch: {
+		'$route'(to, from) {
+			this.type = this.getType(to)
+		}
+	},
+	computed: {
+		...mapState({
+			messagesData: state => state.user.messages
+		}),
+		...mapGetters({
+			token: 'getToken'
+		}),
+		key() {
+			return this.$route.fullPath.replace(/[\/|\?|=]/g, '_');
+		}
+	},
+	methods: {
+		...mapActions({
+			getMessages: 'getMessages',
+			setLoading: 'setLoading'
+		}),
+		getMessagesAll(token) {
+			const context = this;
+			context.setLoading({show: true, text: '加载中...'})
+			context.getMessages({
+				token: token,
+				success(res) {
+					context.success(res);
+				},
+				fail(res) {
+					console.error(res.message)
+					context.setLoading({show: false, tip: '获取数据失败'});
+				}
+			});
+		},
+		success(res) {
+			this.messages = res;
+			this.setLoading({
+				show: false,
+				tip: this.messages[this.type].length > 0 ? '没有更多了...' : '暂无消息'
+			});
+		},
+		getType(route) {
+			return route.query['type'] && route.query['type'] === 'all' ? 'has_read_messages' : 'hasnot_read_messages'
 		}
 	}
 }
-</style>
+</script>
+

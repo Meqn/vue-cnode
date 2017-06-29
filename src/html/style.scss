@@ -22,58 +22,23 @@ body{
 	align-items: flex-end;
 }
 
-/**** loaidng *******************************************************/
-.g-loading{
-	display: inline-block; position: relative;
-	box-sizing: border-box;
-	width: 24px; height: 24px;
-	border: 3px solid #2196f3;
-	vertical-align: middle;
-	border-radius: 50%;
-	animation: rotate .9s linear infinite;
-
-	&::after{
-		content: ""; display: block;
-		position: absolute; top: 5px; right: -3px;
-		width: 8px; height: 8px;
-		background-color: #FFF;
-		box-shadow: 0 0 5px 2px rgb(255,255,255)
-	}
-}
-
-@keyframes rotate{
-	to{
-		transform: rotate(360deg);
-	}
-}
-
-.g-empty{
-	display: flex;
-	margin: 0 8px;
-	flex-flow: row nowrap;
-	align-items: center;
-
-	.line{
-		flex: 1 1;
-		height: 1px;
-		font-size: 0; line-height: 0;
-		background-color: rgba(0, 0, 0, .12);
-	}
-	.text{
-		margin: 0 8px;
-		color: #9e9e9e;
-	}
-}
-
 /**** comm *******************************************************/
 @each $val in (12,14,16,18,24,36) {
 	.font#{$val} {
 		font-size: $val + px !important;
 	}
 }
+a:link,a:visited{
+	color: #424242;
+}
+a:hover{
+	color: #333; text-decoration: underline;
+}
 .tal{text-align: left}
 .tac{text-align: center}
 .tar{text-align: right}
+.whiteBg{background-color: #FFF !important}
+.underline{text-decoration: underline}
 .minw0{
 	min-width: 0;
 }
@@ -104,6 +69,22 @@ body{
 		margin-left: auto; margin-right: auto;
 	}
 }
+
+
+
+
+/**** animation *******************************************************/
+
+.fade-enter-active, .fade-leave-active {
+	transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+	opacity: 0;
+}
+
+
+
+
 
 
 

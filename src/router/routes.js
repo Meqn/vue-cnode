@@ -1,10 +1,11 @@
 
-import Topics from '@components/topics'
-import topicslist from '@components/topics'
-import TopicView from '@pages/topic'
+import Topics from '@pages/topics'
+import Detail from '@pages/detail'
 import Me from '@pages/my'
+import Favorite from '@pages/favorite'
 import Messages from '@pages/messages'
-import myTopics from '@pages/my-topics'
+import MyTopics from '@pages/my-topics'
+import Post from '@pages/post'
 import Login from '@pages/login'
 
 export default [{
@@ -21,9 +22,13 @@ export default [{
 		}
 	},
 	{
+		path: '/topic',
+		redirect: {name: 'topics'}
+	},
+	{
 		path: '/topic/:id',
-		name: 'topicView',
-		component: TopicView,
+		name: 'detail',
+		component: Detail,
 		meta: {
 			title: '主题',
 			toolBarLeft: 'return',
@@ -33,7 +38,7 @@ export default [{
 	{
 		path: '/favorite/',
 		name: 'favorite',
-		component: Topics,
+		component: Favorite,
 		meta: {
 			title: '我的收藏',
 			toolBarLeft: 'none',
@@ -47,6 +52,7 @@ export default [{
 		meta: {
 			title: '消息',
 			toolBarLeft: 'none',
+			requiresAuth: true
 		}
 	},
 	{
@@ -54,18 +60,29 @@ export default [{
 		name: 'me',
 		component: Me,
 		meta: {
-			title: '个人',
-			toolBarLeft: 'none',
-			requiresAuth: true
+			title: '个人中心',
+			toolBarLeft: 'none'
 		}
 	},
 	{
 		path: '/my/topics/',
 		name: 'myTopics',
-		component: myTopics,
+		component: MyTopics,
 		meta: {
 			title: '我的主题',
 			toolBarLeft: 'none',
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/post',
+		name: 'post',
+		component: Post,
+		meta: {
+			title: '新话题',
+			toolBarLeft: 'none',
+			toolBarRight: 'none',
+			bgcolor: '#fff',
 			requiresAuth: true
 		}
 	},

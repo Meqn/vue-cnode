@@ -1,6 +1,6 @@
 <template>
 	<ul class="mdui-list topic-list">
-		<router-link v-for="item in topicsData" :to="{name: 'topicView', params: {id: item.id}}" class="mdui-list-item mdui-ripple topic-list-item" tag="li" :key="item.id">
+		<router-link v-for="item in topicsList" :to="{name: 'detail', params: {id: item.id}}" class="mdui-list-item mdui-ripple topic-list-item" tag="li" :key="item.id">
 			<div class="mdui-list-item-avatar">
 				<img :src="item.author.avatar_url">
 			</div>
@@ -18,10 +18,7 @@
 				</div>
 			</div>
 		</router-link>
-		<li v-if="loading.show" class="tac"><div class="g-loading"></div> <span class="mdui-text-color-grey-500">Loading...</span></li>
-		<li v-else>
-			<div class="g-empty"><span class="line"></span><span class="text">{{loading.tipText}}</span><span class="line"></span></div>
-		</li>
+		<li is="loading"></li>
 	</ul>
 </template>
 
@@ -55,10 +52,14 @@
 }
 </style>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
+import loading from '@components/loading'
 
 export default {
 	name: 'topics',
+	components: {
+		loading
+	},
 	beforeRouteEnter (to, from, next) {
 		console.log('beforeRouteEnter', to)
 		next(vm => {
@@ -74,11 +75,7 @@ export default {
 	data() {
 		return {
 			scroll: false, 	// 默认禁止滚动加载，ajax获取一次后才能滚动加载(防止Bug：如果从一个很长的页面进来，会加载两页)
-			loading: {
-				show: true,
-				tipText: ''
-			},
-			topicsData: [],
+			topicsList: [],
 			searchKey: {
 				page: 1,
 				limit: 20,
@@ -97,13 +94,19 @@ export default {
 		}
 		// 收藏主题
 		if(_routeName === 'favorite') {
-			let _username = this.userName;
-			this.getFavorite(_username)
+			if(this.favoriteTopics.success) {
+				this.getFavoriteTopicsSuccess(this.favoriteTopics);
+			} else {
+				this.getFavoriteTopics(this.username)
+			}
 		}
 	},
 	computed: {
+		...mapState({
+			favoriteTopics: state => state.favorite.topics
+		}),
 		...mapGetters({
-			userName: 'userName'
+			username: 'getUserName'
 		}),
 		key() {
 			return this.$route.path.replace(/\//g, '_');
@@ -119,34 +122,20 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions({
+			getFavorite: 'getFavorite',
+			setLoading: 'setLoading'
+		}),
 		topicTab(top, good, tab) {
-			let text, className;
-			if(top) {
-				text = '置顶'
-				className = 'top'
-			} else if(good) {
-				text = '精华'
-				className = 'good'
-			} else {
-				switch (tab) {
-					case 'share':
-						text = '分享'
-						className = 'share'
-						break;
-					case 'ask':
-						text = '问答'
-						className = 'ask'
-						break;
-					case 'job':
-						text = '招聘'
-						className = 'job'
-						break;
-					default:
-						text = '暂无'
-						className = ''
-				}
+			let _tab = top ? 'top' : good ? 'good' : tab;
+			let _ret = {
+				top: {text: '置顶', className: 'top'},
+				good: {text: '精华', className: 'good'},
+				share: {text: '分享', className: 'share'},
+				ask: {text: '问答', className: 'ask'},
+				job: {text: '招聘', className: 'job'}
 			}
-			return {text, className}
+			return _ret[_tab] || {text: '暂无', className: ''}
 		},
 		// 获取主题
 		getTopics(options = {}, success, fail, always) {
@@ -156,10 +145,10 @@ export default {
 					let _data = res.data.data;
 					if(_data.length === 0) {
 						this.loading.show = false;
-						this.loading.tipText = this.topicsData.length ? '我是有底线的' : '暂无数据';
+						this.loading.tipText = this.topicsList.length ? '只收藏这点...' : '暂无数据';
 					}
 					if(_data.length > 0) {
-						this.topicsData.push(..._data)
+						this.topicsList.push(..._data)
 					}
 				}	
 				this.scroll = true;
@@ -170,23 +159,30 @@ export default {
 			});
 		},
 		// 获取收藏
-		getFavorite(username) {
-			this.$http.get('/topic_collect/'+ username).then(res => {
-				let _data = res.data.data;
-				if(_data.length > 0) {
-					this.topicsData = _data;
-					this.loading.tipText = '好像就这么点...';
-				} else {
-					this.loading.tipText = '暂无数据';
+		getFavoriteTopics(username) {
+			const context = this;
+			context.getFavorite({
+				username,
+				success(res) {
+					context.getFavoriteTopicsSuccess(res)
+				},
+				fail(res) {
+					console.error(res)
+					context.setLoading({show: false, tip: '获取数据失败'});
 				}
-				this.loading.show = false;
-			}).catch(error => {
-				console.error(error);
+			});
+		},
+		getFavoriteTopicsSuccess(data) {
+			const context = this;
+			context.topicsList = data.data;
+			context.setLoading({
+				show: false,
+				tip: context.topicsList.length > 0 ? '就只收藏这点？' : '暂无数据'
 			});
 		},
 		tabTopics(tab) {
 			this.searchKey.tab = tab;
-			this.topicsData = [];
+			this.topicsList = [];
 			this.searchKey.page = 1;
 			this.getTopics();
 		},

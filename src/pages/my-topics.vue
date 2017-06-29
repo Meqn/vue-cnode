@@ -1,32 +1,12 @@
 <template>
 <div class="topics">
-	<div id="topics-tab" class="mdui-tab mdui-tab-full-width message-tab" mdui-tab>
+	<div id="topics-tab" class="mdui-tab mdui-tab-full-width whiteBg">
 		<router-link :to="{name: 'myTopics', query: {type : 'reply'}}" class="mdui-ripple" :class="{'mdui-tab-active': type === 'reply'}" active-class="mdui-tab-active" exact>最近回复</router-link>
 		<router-link :to="{name: 'myTopics', query: {type : 'post'}}" class="mdui-ripple" :class="{'mdui-tab-active': type === 'post'}" active-class="mdui-tab-active" exact>最新发布</router-link>
 	</div>
-	<ul class="mdui-list topic-list">
-		<router-link v-for="item in topicsList[type]" :to="{name: 'topicView', params: {id: item.id}}" class="mdui-list-item mdui-ripple topic-list-item" tag="li" :key="item.id">
-			<div class="mdui-list-item-avatar">
-				<img :src="item.author.avatar_url">
-			</div>
-			<div class="mdui-list-item-content minw0">
-				<div class="mdui-list-item-title mdui-text-truncate">
-					{{item.title}}
-				</div>
-				<div class="mdui-list-item-text mdui-list-item-one-line">
-					<span v-text="item.author.loginname"></span>
-					<div class="mdui-float-right">
-						<i class="mdui-icon material-icons mdui-icon-mini mdui-text-color-grey-300">&#xe192;</i>
-						<span class="">10分钟前</span>
-					</div>
-				</div>
-			</div>
-		</router-link>
-		<li v-if="isLoading" class="tac"><div class="g-loading"></div> <span class="mdui-text-color-grey-500">Loading...</span></li>
-		<li v-if="noData">
-			<div class="g-empty"><span class="line"></span><span class="text">暂无数据</span><span class="line"></span></div>
-		</li>
-	</ul>
+	<transition name="slide-fade" mode="out-in">
+	<my-topics-list :topics="topicsList[type]" :key="key"></my-topics-list>
+	</transition>
 </div>
 </template>
 
@@ -39,28 +19,30 @@
 </style>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
+
+import myTopicsList from '@components/my-topics-list'
+
 export default {
 	name: 'myTopics',
+	components: {
+		myTopicsList
+	},
 	data() {
 		return {
-			isLoading: true,
-			noData: false,
 			type: 'recent_replies',
 			topicsList: {}
 		}
 	},
 	created() {
-		let _username = this.getUserName;
-		this.type = this.getType(this.$route);
-
-		if(this.myTopics['recent_replies'] && this.myTopics['recent_topics']) {
-			this.getSuccess(this.myTopics);
+		if(this.userData['recent_topics'] || this.userData['recent_replies']) {
+			this.success(this.userData);
 		} else {
-			this.getTopics(_username)
+			this.getTopics();
 		}
 	},
 	mounted() {
+		// tab 当前状态
 		this.$nextTick(() => {
 			if(window['mdui']) {
 				new mdui.Tab('#topics-tab');
@@ -71,13 +53,14 @@ export default {
 	},
 	computed: {
 		...mapState({
-			userinfo: state => state.user.userinfo
+			userData: state => state.user.userData
 		}),
-		// userinfo = myTopics
 		...mapGetters({
-			getUserName: 'getUserName',
-			myTopics: 'getUserInfo'
-		})
+			username: 'getUserName'
+		}),
+		key() {
+			return this.$route.fullPath.replace(/[\/|\?|=]/g, '_');
+		}
 	},
 	watch: {
 		'$route' (to, from) {
@@ -85,23 +68,31 @@ export default {
 		}
 	},
 	methods: {
-		...mapMutations({
-			setUserInfo: 'setUserInfo'
+		...mapActions({
+			getUserData: 'getUserData',
+			setLoading: 'setLoading'
 		}),
-		getTopics(username) {
-			this.$http.get('/user/'+ username).then(res => {
-				console.log(res);
-				var _data = res.data.data;
-				this.setUserInfo(_data);
-				this.getSuccess(_data)
-			}).catch(error => {
-				console.error(error);
+		getTopics() {
+			const context = this;
+			context.setLoading({show: true, text: '加载中...'})
+			context.getUserData({
+				username: context.username,
+				success(res) {
+					context.success(res);
+				},
+				fail(res) {
+					console.error(res.message)
+					context.setLoading({show: false, tip: '加载失败'});
+				}
 			});
 		},
-		getSuccess(data) {
-			this.topicsList = data;
-			this.isLoading = false;
-			this.noData = this.topicsList[this.type].length > 0 ? false : true;
+		success(data) {
+			const context = this;
+			context.topicsList = data;
+			context.setLoading({
+				show: false,
+				tip: context.topicsList[context.type].length > 0 ? '就这么点...' : '暂无数据'
+			});
 		},
 		getType(route) {
 			return route.query.type && route.query.type === 'post' ? 'recent_topics' : 'recent_replies'
