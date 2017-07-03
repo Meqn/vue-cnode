@@ -14,13 +14,11 @@ Vue.use(VueRouter)
 import "@modules/mdui/dist/css/mdui.css"
 
 const router = new VueRouter({
-	routes,
-	scrollBehavior (to, from, savePosition) {
-		console.log(savePosition)
-	}
+	routes
 });
 router.beforeEach((to, from, next) => {
 	window.scrollTo(0, 0)		// 滚动到顶部
+
 	if(to.meta.bgcolor) {
 		document.body.style.backgroundColor = to.meta.bgcolor;
 	} else {
@@ -50,6 +48,7 @@ router.beforeEach((to, from, next) => {
 		this.$http.defaults.baseURL = 'https://cnodejs.org/api/v1'
 	}
 });*/
+
 new Vue({
 	el: '#app',
 	router,

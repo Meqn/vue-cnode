@@ -56,7 +56,6 @@
 import loading from '@components/loading'
 
 export default {
-	name: 'topicsList',
 	components: {
 		loading
 	},

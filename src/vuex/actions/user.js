@@ -2,6 +2,7 @@
 import * as types from '../mutations_type';
 import {sessionStore} from '../../libs/utils'
 import api from '../../libs/api';
+import {collectTopic} from './topic'
 
 /**
  * 获取本地登录用户
@@ -67,8 +68,26 @@ const getFavorite = ({commit}, payload) => {
 		payload['fail'] && payload['fail'](res);
 	});
 }
+/**
+ * 收藏帖子
+ * @param {*} param0 
+ * @param {*} payload 
+ */
+const addFavorite = ({commit, dispatch}, payload) => {
+	const {topic_id, accesstoken, success = null, fail = null} = payload
+	api.addFavorite(accesstoken, topic_id).then(res => {
+		console.log('addFavorite ... ', res)
+		commit('types.MARK_MESSAGE')
+		dispatch('collectTopic', {id: topic_id})
+		typeof success === 'function' && success(res)
+	}).catch(res => {
+		console.error(res)
+		typeof fail === 'function' && fail(res)
+	})
+	
+}
 
-const getMessages = ({commit, dispatch}, payload) => {
+const getMessages = ({commit}, payload) => {
 	api.getMessages(payload['token']).then(res => {
 		console.log('getMessages ... ', res)
 		let _data = res.data.data;
@@ -115,6 +134,7 @@ export default {
 	getUserData,
 	getStoreUser,
 	getFavorite,
+	addFavorite,
 	getMessages,
 	getMessagesCount,
 	markMessageAll,

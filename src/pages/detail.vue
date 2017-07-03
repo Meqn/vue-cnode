@@ -13,7 +13,7 @@
 						发布于5天前，<span v-text="topic.visit_count"></span>次浏览
 					</div>
 				</div>
-				<div class="like" v-if="topic.is_collect">
+				<div class="like" v-if="topic.is_collect" @click="addFavorite()">
 					<i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-theme-accent">&#xe87d;</i>
 					<div>已收藏</div>
 				</div>
@@ -25,8 +25,9 @@
 		</div>
 	</div>
 	<div class="mdui-typo topic-item topic-content" v-html="topic.content"></div>
-	<comments></comments>
+	<comments id="topic-comments" :comments="topic.replies" :count="topic.reply_count"></comments>
 	<comments-post></comments-post>
+	<button class="mdui-fab mdui-fab-mini mdui-color-theme-accent mdui-fab-fixed mdui-ripple"><i class="mdui-icon material-icons" @click="toComments()">&#xe0b9;</i></button>
 </div>
 </template>
 
@@ -43,7 +44,7 @@
 <script>
 import comments from '@components/comments'
 import commentsPost from '@components/comments-post'
-import {mapState, mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
 	name: 'detail',
@@ -53,7 +54,9 @@ export default {
 	data() {
 		return {
 			topic: {
-				author: {}
+				author: {},
+				replies: [],
+				reply_count: 0
 			}
 		}
 	},
@@ -65,10 +68,8 @@ export default {
 		}
 	},
 	computed: {
-		...mapState({
-			topicData: state => state.topic.topic
-		}),
 		...mapGetters({
+			topicData: 'getTopic',
 			getToken: 'getToken'
 		})
 	},
@@ -76,8 +77,17 @@ export default {
 		...mapActions({
 			getTopic: 'getTopic',
 			setToast: 'setToast',
-			hideToast: 'hideToast'
-		})
+			hideToast: 'hideToast',
+			addFavorite: 'addFavorite'
+		}),
+		toComments() {
+			const el = document.getElementById('topic-comments')
+			window.scrollTo(0, el.offsetTop - 60)
+		},
+		collectTopic(id) {
+			console.log('id', id)
+			// this.addFavorite({topic_id: topic.id})
+		}
 	},
 	created() {
 		let _id = this.$route.params['id']

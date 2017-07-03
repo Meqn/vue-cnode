@@ -5,6 +5,7 @@ const state = {
 	user: {},				// 用户登录信息
 	userData: {},			// 用户信息
 	favorite: {},			// 用户收藏主题
+	favoriteMark: false,
 	messages: {},			// 所有消息
 	messagesCount: -1,	// 未读消息个数
 	messageMark: false 	// 对 messages 是否有操作
@@ -29,8 +30,9 @@ const mutations = {
 	[types.SET_FAVORITE](state, payload) {
 		state.favorite = payload
 	},
-	[types.ADD_FAVORITE](state, payload) {
-		state.favorite.data.push(...payload);
+	[types.ADD_FAVORITE](state) {
+		state.favoriteMark = true
+		// state.favorite.data.push(...payload);
 	},
 	[types.GET_MESSAGES](state, payload) {
 		state.messages = payload
