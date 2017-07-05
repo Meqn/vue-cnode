@@ -14,10 +14,12 @@ export default {
 	beforeRouteEnter (to, from, next) {
 		console.log('beforeRouteEnter', to)
 		next(vm => {
-			if (vm.getScrollY > 0) {
-				window.scrollTo(0, vm.getScrollY)
+			if (to.name == 'topics') {
+				if (vm.getScrollY > 0) {
+					window.scrollTo(0, vm.getScrollY)
+				}
+				window.addEventListener('scroll', vm.getScroll, false);
 			}
-			window.addEventListener('scroll', vm.getScroll, false);
 		})
 	},
 	beforeRouteLeave (to, from, next) {

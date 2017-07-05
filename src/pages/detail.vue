@@ -26,8 +26,8 @@
 	</div>
 	<div class="mdui-typo topic-item topic-content" v-html="topic.content"></div>
 	<comments id="topic-comments" :comments="topic.replies" :count="topic.reply_count"></comments>
-	<comments-post></comments-post>
-	<button class="mdui-fab mdui-fab-mini mdui-color-theme-accent mdui-fab-fixed mdui-ripple"><i class="mdui-icon material-icons" @click="toComments()">&#xe0b9;</i></button>
+	<comments-post id="topic-comments-post"></comments-post>
+	<button v-show="showComment" @click="goComment" class="mdui-fab mdui-fab-mini mdui-color-theme-accent mdui-fab-fixed mdui-ripple"><i class="mdui-icon material-icons">&#xe0b9;</i></button>
 </div>
 </template>
 
@@ -57,7 +57,9 @@ export default {
 				author: {},
 				replies: [],
 				reply_count: 0
-			}
+			},
+			showComment: true,
+			showTop: false
 		}
 	},
 	beforeRouteEnter(to, from, next) {
@@ -80,9 +82,13 @@ export default {
 			hideToast: 'hideToast',
 			addFavorite: 'addFavorite'
 		}),
-		toComments() {
-			const el = document.getElementById('topic-comments')
-			window.scrollTo(0, el.offsetTop - 60)
+		goComment(event) {
+			this.$scrollTo('#topic-comments', {
+				offset: -60,
+				onDone: () => {
+					this.showComment = !this.showComment
+				}
+			})
 		},
 		collectTopic(id) {
 			console.log('id', id)

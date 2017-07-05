@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './vuex/store'
 import {sessionStore} from './libs/utils'
+import VueScrollTo from './libs/scrollTo'
 // import axios from 'axios'
 // import VueAxios from './libs/vue-axios'
 
@@ -9,6 +10,7 @@ import App from './app'
 import routes from './router/routes.js'
 
 Vue.use(VueRouter)
+Vue.use(VueScrollTo)
 // Vue.use(VueAxios, axios)
 
 import "@modules/mdui/dist/css/mdui.css"

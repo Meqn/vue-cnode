@@ -32,7 +32,6 @@ export default {
 		// 获取收藏
 		getFavoriteTopics(username) {
 			const context = this;
-			context.setLoading({show: true, text: '加载中...'})
 			context.getFavorite({
 				username,
 				success(res) {
@@ -54,6 +53,7 @@ export default {
 		}
 	},
 	created() {
+		this.setLoading({ show: true, text: '加载中...' })
 		if(this.favoriteTopics.success) {
 			this.success(this.favoriteTopics);
 		} else {

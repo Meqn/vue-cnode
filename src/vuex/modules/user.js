@@ -17,6 +17,9 @@ const getters = {
 	},
 	getToken(state) {
 		return state.user['token']
+	},
+	getMessages (state) {
+		return state.messages
 	}
 }
 

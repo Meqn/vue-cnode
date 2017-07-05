@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import messagesList from '@components/messages-list'
 
 export default {
@@ -21,25 +21,8 @@ export default {
 	},
 	data() {
 		return {
-			type: 'hasnot_read_messages',
-			messages: {}
+			type: 'hasnot_read_messages'
 		}
-	},
-	created() {
-		if(this.messagesData && this.messagesData[this.type]) {
-			this.success(this.messagesData);
-		} else {
-			this.getMessagesAll(this.token)
-		}
-	},
-	mounted() {
-		this.$nextTick(() => {
-			if(window['mdui']) {
-				new mdui.Tab('#messages-tab');
-			} else {
-				window.addEventListener('DOMContentLoaded', () => {new mdui.Tab('#messages-tab')}, false);
-			}
-		})
 	},
 	watch: {
 		'$route'(to, from) {
@@ -47,11 +30,9 @@ export default {
 		}
 	},
 	computed: {
-		...mapState({
-			messagesData: state => state.user.messages
-		}),
 		...mapGetters({
-			token: 'getToken'
+			token: 'getToken',
+			messages: 'getMessages'
 		}),
 		key() {
 			return this.$route.fullPath.replace(/[\/|\?|=]/g, '_');
@@ -62,9 +43,8 @@ export default {
 			getMessages: 'getMessages',
 			setLoading: 'setLoading'
 		}),
-		getMessagesAll(token) {
+		getAllMessages(token) {
 			const context = this;
-			context.setLoading({show: true, text: '加载中...'})
 			context.getMessages({
 				token: token,
 				success(res) {
@@ -77,15 +57,32 @@ export default {
 			});
 		},
 		success(res) {
-			this.messages = res;
 			this.setLoading({
 				show: false,
-				tip: this.messages[this.type].length > 0 ? '没有更多了...' : '暂无消息'
+				tip: this.messages[this.type].length > 0 ? '没有了...' : '暂无消息'
 			});
 		},
 		getType(route) {
-			return route.query['type'] && route.query['type'] === 'all' ? 'has_read_messages' : 'hasnot_read_messages'
+			return route.query['type'] && route.query['type'] == 'all' ? 'has_read_messages' : 'hasnot_read_messages'
 		}
+	},
+	created() {
+		this.setLoading({show: true, text: '加载中...'})
+		this.type = this.getType(this.$route)
+		if(this.messages && this.messages[this.type]) {
+			this.success();
+		} else {
+			this.getAllMessages(this.token)
+		}
+	},
+	mounted() {
+		this.$nextTick(() => {
+			if(window['mdui']) {
+				new mdui.Tab('#messages-tab');
+			} else {
+				window.addEventListener('DOMContentLoaded', () => {new mdui.Tab('#messages-tab')}, false);
+			}
+		})
 	}
 }
 </script>

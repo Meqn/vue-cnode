@@ -2,7 +2,7 @@
 	<div class="topic-item topic-comments">
 		<div class="mdui-typo-subheading mdui-m-x-2 mdui-p-y-2 mdui-text-color-grey-900">
 			<i class="mdui-icon material-icons">&#xe7fb;</i> <span v-text="count"></span>条评论
-			<span style="float:right">去评论</span>
+			<span style="float:right" v-scroll-to="'#topic-comments-post'">去评论</span>
 		</div>
 		<comment-item v-for="item in comments" :item="item" :key="item.id"></comment-item>
 	</div>

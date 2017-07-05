@@ -7,7 +7,7 @@
 			<span class="font12 mdui-text-color-grey-500">7分钟前</span>
 		</div>
 		<div class="bd" v-html="item.reply.content"></div>
-		<div class="mdui-text-truncate ft">来自话题：<a href="#" v-text="item.topic.title"></a></div>
+		<div class="mdui-text-truncate ft">来自话题：<router-link :to="{name: 'detail', params: {id: item.topic.id}}" v-text="item.topic.title"></router-link></div>
 	</li>
 	<li is="loading"></li>
 </ul>
