@@ -22,15 +22,15 @@
  * 
  */
 
-(function (global, factory) {
-  if (typeof exports === 'object' && typeof module !== 'undefined') {
-    module.exports = factory()
-  } else if (typeof define === 'function' && define.amd) {
-    define(factory)
-  } else {
-    global['vue-scrollto'] = factory()
-  }
-}(this, function () { 'use strict';
+(function(global, factory) {
+    if (typeof exports === 'object' && typeof module !== 'undefined') {
+        module.exports = factory()
+    } else if (typeof define === 'function' && define.amd) {
+        define(factory)
+    } else {
+        global['vue-scrollto'] = factory()
+    }
+}(this, function() { 'use strict';
 
   let Util = {
     $$ (selector) {
@@ -109,20 +109,6 @@
    */
 
   let Plugin = {
-    bind(el, binding) {
-      getBinding(el).binding = binding
-      Util.on(el, 'click', handleClick)
-      console.log('绑定 ..., ',Plugin)
-    },
-    unbind(el, binding) {
-      removeBinding(el)
-      Util.off(el, 'click', handleClick)
-      console.log('解绑 ..., ',Plugin)
-    },
-    update(el, binding) {
-      getBinding(el).binding = binding
-      console.log('更新 ..., ',Plugin)
-    },
     scrollTo,
     bindings,
     setDefaults
@@ -136,7 +122,22 @@
     // 设置默认选项
     if(options) setDefaults(options)
     // 添加全局资源
-    Vue.directive('scroll-to', Plugin)
+    Vue.directive('scroll-to', {
+      bind(el, binding) {
+        getBinding(el).binding = binding
+        Util.on(el, 'click', handleClick)
+        console.log('绑定 ..., ', Plugin)
+      },
+      unbind(el, binding) {
+        removeBinding(el)
+        Util.off(el, 'click', handleClick)
+        console.log('解绑 ..., ', Plugin)
+      },
+      update(el, binding) {
+        getBinding(el).binding = binding
+        console.log('更新 ..., ', Plugin)
+      }
+    })
     // 添加实例方法
     Vue.prototype.$scrollTo = Plugin.scrollTo
   }
